@@ -1,20 +1,32 @@
-import { Group } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import MODEL from './land.gltf';
+import {
+  Group,
+  Vector3,
+  AnimationMixer,
+  NumberKeyframeTrack,
+  AnimationClip,
+  Euler,
+} from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 class Land extends Group {
-    constructor() {
-        // Call parent Group() constructor
-        super();
+  constructor(parent, camera) {
+    // Call parent Group() constructor
+    super();
 
-        const loader = new GLTFLoader();
+    // Init state
+    this.state = {
+      gui: parent.state.gui,
+    };
+  }
 
-        this.name = 'land';
-
-        loader.load(MODEL, (gltf) => {
-            this.add(gltf.scene);
-        });
-    }
+  update(timeStamp, x, y, z) {
+    console.log(
+      "chunk: ",
+      Math.floor(this.state.parent.state.x / 5),
+      Math.floor(this.state.parent.state.y / 5),
+      Math.floor(this.state.parent.state.z / 5)
+    );
+  }
 }
 
 export default Land;

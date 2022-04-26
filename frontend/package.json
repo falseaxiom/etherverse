@@ -1,9 +1,9 @@
 {
-  "name": "lower-case-dashed-name-of-project",
-  "repository": "REPOSITORY-NAME-AS-IT-APPEARS-IN-GITHUB-URL",
+  "name": "dreamworld",
+  "repository": "dreamworld",
   "version": "0.1.0",
-  "title": "PROJECT TITLE HERE",
-  "description": "SHORT DESCRIPTION OF PROJECT HERE. ONE TO TWO SENTENCES MAX",
+  "title": "Etherverse",
+  "description": "A computer graphics simulation to build a dream world while listening to meditative tracks.",
   "keywords": [
     "Princeton",
     "graphics",
@@ -15,28 +15,32 @@
     "...",
     "this last entry CANNOT have a comma after it ->"
   ],
+  "homepage": "http://dreamworld-426.github.io/dreamworld",
   "scripts": {
-    "start": "webpack-dev-server --mode development --output-public-path \"\"",
-    "prebuild": "rimraf ./build && mkdirp ./build",
-    "build": "npm run prebuild && webpack --mode production --progress --output-public-path \"\"",
+    "start": "webpack-dev-server --mode development --output-public-path '/'",
+    "prebuild": "rimraf ./build && mkdir ./build",
+    "build": "npm run prebuild && webpack --mode production --output-public-path '/'",
     "format": "prettier --write '*.js' 'src/**/*.js'",
-    "deploy": "npm run prebuild && webpack --mode production --progress && gh-pages -d build"
+    "deploy": "npm run prebuild && webpack --mode production && gh-pages -d build"
   },
   "dependencies": {
+    "color-tween": "^0.1.1",
     "dat.gui": "^0.7.7",
-    "three": "^0.116.0",
+    "simplex-noise": "^2.4.0",
+    "three": "^0.115.0",
+    "three-instanced-mesh": "0.96.2",
     "three-obj-loader": "^1.1.3",
+    "three-sky": "^1.1.2",
     "webpack-cli": "^3.3.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
     "babel-loader": "^8.1.0",
     "file-loader": "^6.0.0",
     "gh-pages": "^2.2.0",
-    "html-webpack-plugin": "^4.3.0",
-    "mkdirp": "^1.0.4",
-    "prettier": "^2.0.5",
+    "html-webpack-plugin": "^4.2.1",
+    "prettier": "^2.0.4",
     "raw-loader": "^4.0.1",
     "rimraf": "^3.0.2",
     "webpack": "^4.43.0",
