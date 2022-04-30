@@ -144,6 +144,26 @@ info.innerHTML = `
 land_info.appendChild(info);
 document.body.appendChild(land_info);
 
+// add profile
+const handleProfile = () => {
+  const profile = document.createElement("div");
+  profile.innerHTML = "Profile";
+  profile.style = "position: absolute";
+  document.body.appendChild(profile);
+  console.log("here");
+};
+
+const profile_info = document.createElement("div");
+profile_info.style.position = "absolute";
+profile_info.style.color = "white";
+profile_info.style.bottom = "0";
+profile_info.style.margin = "10px";
+const button = document.createElement("button");
+button.innerHTML = "Profile";
+button.onclick = handleProfile;
+profile_info.appendChild(button);
+document.body.appendChild(profile_info);
+
 // Set up renderer, canvas, and minor CSS adjustments
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.shadowMap.enabled;
