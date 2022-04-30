@@ -1,7 +1,12 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Land {
+<<<<<<< Updated upstream
     uint price = 0;
+=======
+    uint256 price = 0;
+    uint256 numPlots = 0;
+>>>>>>> Stashed changes
 
     struct History {
         uint date;
@@ -11,12 +16,22 @@ contract Land {
     }
 
     struct Plot {
+<<<<<<< Updated upstream
         uint id;             // id of plot of land
         string name;         // name of land
         address owner;       // current owner of plot
         uint price;          // current price of plot
         bool onMarket;       // true if owner wants to sell
         History[] history;   // history of past owners/sell prices
+=======
+        uint256 id; // id of plot of land
+        string name; // name of land
+        address owner; // current owner of plot
+        uint256 price; // current price of plot
+        bool onMarket; // true if owner wants to sell
+        mapping(uint256 => History) history; // history of past owners/sell prices
+        uint256 historyLength; // length of history
+>>>>>>> Stashed changes
     }
 
     mapping(uint => Plot) public plots; // database of all plots
@@ -25,6 +40,23 @@ contract Land {
     // You must emit these events when certain triggers occur (see the ERC-20 spec).
     event Approval(address indexed _from, address indexed _to, uint256 _value);
     event Transfer(address indexed _owner, address indexed _spender, uint256 _value);
+
+    function createLand(uint256 _id, string memory _name, address _owner, uint256 _price, bool _onMarket) public returns (bool) {
+        // create new plot
+        Plot memory p1 = Plot({
+            id: _id,
+            name: _name,
+            owner: _owner,
+            price: _price,
+            onMarket: _onMarket,
+            historyLength: 0
+        });
+
+        plots[numPlots] = p1;
+        numPlots++;
+
+        return true;
+    }
 
     // buy a plot of land
     function buyPlot(address _buyer, uint _pid) public returns (bool) {
@@ -42,8 +74,16 @@ contract Land {
         
 
         // add to history
+<<<<<<< Updated upstream
         plots[_pid].history.push(History(block.timestamp, _buyer, oldOwner, plots[_pid].price));
         
+=======
+        plots[_pid].history[plots[_pid].historyLength] = (
+            History(block.timestamp, _buyer, oldOwner, plots[_pid].price)
+        );
+        plots[_pid].historyLength++;
+
+>>>>>>> Stashed changes
         return true;
     }
 
