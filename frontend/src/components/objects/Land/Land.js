@@ -16,16 +16,19 @@ class Land extends Group {
     // Init state
     this.state = {
       gui: parent.state.gui,
+      land: [],
     };
+
+    parent.addToUpdateList(this);
   }
 
   update(timeStamp, x, y, z) {
-    console.log(
-      "chunk: ",
-      Math.floor(this.state.parent.state.x / 5),
-      Math.floor(this.state.parent.state.y / 5),
-      Math.floor(this.state.parent.state.z / 5)
-    );
+    this.state.land = [
+      (Math.floor(x / 5), Math.floor(z / 5) + 1),
+      (Math.floor(x / 5) + 1, Math.floor(z / 5) + 1),
+      (Math.floor(x / 5), Math.floor(z / 5)),
+      (Math.floor(x / 5) + 1, Math.floor(z / 5)),
+    ];
   }
 }
 

@@ -77,6 +77,7 @@ class ChunkManager extends Group {
       terraces: 15,
       updateWithMusic: false,
 
+      fixed_chunks: [0, 1, 2, 3, 4, 5, 6, 7, 8],
       // PRESETS
       preset: "Cotton Candy",
     };
@@ -109,7 +110,9 @@ class ChunkManager extends Group {
         coordinates[i][2],
         new_plane_geo
       );
+      console.log(new_chunk);
       this.add(new_chunk);
+
       this.state.chunks.push(new_chunk);
     }
 
@@ -390,6 +393,10 @@ class ChunkManager extends Group {
       x > this.state.chunkWidth / 2 ||
       x < -this.state.chunkWidth / 2;
 
+    if (need_update) {
+      console.log(need_update);
+    }
+
     if (z > this.state.chunkWidth / 2) {
       this.state.currentZOffset += this.state.chunkWidth;
       this.state.parent.state.z -= this.state.chunkWidth;
@@ -409,6 +416,20 @@ class ChunkManager extends Group {
       this.state.chunks[3] = this.state.chunks[0];
       this.state.chunks[4] = this.state.chunks[1];
       this.state.chunks[5] = this.state.chunks[2];
+
+      // edit fixed chunks
+      const copy = [...this.state.fixed_chunks];
+      this.state.fixed_chunks[6] = copy[3];
+      this.state.fixed_chunks[7] = copy[4];
+      this.state.fixed_chunks[8] = copy[5];
+
+      this.state.fixed_chunks[3] = copy[0];
+      this.state.fixed_chunks[4] = copy[1];
+      this.state.fixed_chunks[5] = copy[2];
+
+      this.state.fixed_chunks[0] = copy[6];
+      this.state.fixed_chunks[1] = copy[7];
+      this.state.fixed_chunks[2] = copy[8];
 
       // make new chunks with proper offset
       this.state.chunks[0] = new Chunk(
@@ -456,6 +477,20 @@ class ChunkManager extends Group {
       this.state.chunks[4] = this.state.chunks[7];
       this.state.chunks[5] = this.state.chunks[8];
 
+      // edit fixed_chunks
+      const copy = [...this.state.fixed_chunks];
+      this.state.fixed_chunks[0] = copy[3];
+      this.state.fixed_chunks[1] = copy[4];
+      this.state.fixed_chunks[2] = copy[5];
+
+      this.state.fixed_chunks[3] = copy[6];
+      this.state.fixed_chunks[4] = copy[7];
+      this.state.fixed_chunks[5] = copy[8];
+
+      this.state.fixed_chunks[6] = copy[0];
+      this.state.fixed_chunks[7] = copy[1];
+      this.state.fixed_chunks[8] = copy[2];
+
       // make new chunks with proper offset
       this.state.chunks[6] = new Chunk(
         this,
@@ -502,6 +537,20 @@ class ChunkManager extends Group {
       this.state.chunks[4] = this.state.chunks[3];
       this.state.chunks[7] = this.state.chunks[6];
 
+      // edit fixed chunks
+      const copy = [...this.state.fixed_chunks];
+      this.state.fixed_chunks[2] = copy[1];
+      this.state.fixed_chunks[5] = copy[4];
+      this.state.fixed_chunks[8] = copy[7];
+
+      this.state.fixed_chunks[1] = copy[0];
+      this.state.fixed_chunks[4] = copy[3];
+      this.state.fixed_chunks[7] = copy[6];
+
+      this.state.fixed_chunks[0] = copy[2];
+      this.state.fixed_chunks[3] = copy[5];
+      this.state.fixed_chunks[6] = copy[8];
+
       // make new chunks with proper offset
       this.state.chunks[0] = new Chunk(
         this,
@@ -547,6 +596,20 @@ class ChunkManager extends Group {
       this.state.chunks[1] = this.state.chunks[2];
       this.state.chunks[4] = this.state.chunks[5];
       this.state.chunks[7] = this.state.chunks[8];
+
+      // edit fixed chunks
+      const copy = [...this.state.fixed_chunks];
+      this.state.fixed_chunks[0] = copy[1];
+      this.state.fixed_chunks[3] = copy[4];
+      this.state.fixed_chunks[6] = copy[7];
+
+      this.state.fixed_chunks[1] = copy[2];
+      this.state.fixed_chunks[4] = copy[5];
+      this.state.fixed_chunks[7] = copy[8];
+
+      this.state.fixed_chunks[2] = copy[0];
+      this.state.fixed_chunks[5] = copy[3];
+      this.state.fixed_chunks[8] = copy[6];
 
       // make new chunks with proper offset
       this.state.chunks[2] = new Chunk(

@@ -85,13 +85,14 @@ class Bird extends Group {
   // rotate bird based on wasd keys pressed
   birdHandler(e) {
     // if arrow keys call cameraHandler
-    let arrows = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+    let arrows = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "b"];
     if (arrows.includes(e.key)) {
       this.cameraHandler(e);
     }
 
     // change the state of the bird;
     this.state.keysPressed[e.keyCode] = true;
+
     // bird goes up
     // w key
     if (this.state.keysPressed[87]) {
@@ -114,6 +115,14 @@ class Bird extends Group {
     // a key
     if (this.state.keysPressed[65]) {
       this.state.leftTime = e.timeStamp;
+    }
+
+    // space key
+    if (this.state.keysPressed[32]) {
+      this.state.velocity += 0.05;
+      if (this.state.velocity >= 2) {
+        this.state.velocity = 2;
+      }
     }
   }
 
@@ -295,6 +304,14 @@ class Bird extends Group {
         this.state.yRotate -= 0.005;
       }
 
+      // decrease velocity if space bar isn't pressed
+      if (!this.state.keysPressed[32]) {
+        this.state.velocity -= 0.05;
+        if (this.state.velocity <= 0) {
+          this.state.velocity = 0;
+        }
+      }
+
       // update rotation of the bird;
       this.state.model.rotation.x = this.state.xRotate;
       this.state.model.rotation.y = this.state.yRotate;
@@ -312,7 +329,6 @@ class Bird extends Group {
       //   Math.floor(this.state.parent.state.y / 5),
       //   Math.floor(this.state.parent.state.z / 5)
       // );
-
       // reposition bird if wasd were pressed and isn't currently being pressed
       if (this.state.upTime + 1000 < timeStamp) {
         if (this.state.xRotate <= 0.005) {
@@ -380,6 +396,13 @@ class Bird extends Group {
           350 * Math.sin(-(this.state.xRotate - Math.PI / 15));
         this.state.camera.position.z =
           300 * Math.cos(-(this.state.yRotate - Math.PI / 2));
+      }
+
+      // bird eye view
+      else if (this.state.cameraState == "b") {
+        this.state.camera.position.x = 300 * Math.sin(-this.state.yRotate);
+        this.state.camera.position.y = 500;
+        this.state.camera.position.z = -100 * Math.cos(this.state.yRotate);
       }
 
       this.state.camera.lookAt(this.state.model.position);

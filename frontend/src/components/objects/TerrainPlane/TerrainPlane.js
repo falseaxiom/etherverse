@@ -79,6 +79,45 @@ class TerrainPlane extends Group {
 
     // Add self to parent's update list
     // parent.addToUpdateList(this);
+    window.addEventListener(
+      "click",
+      (e) => {
+        this.showLandInfo();
+      },
+      false
+    );
+  }
+
+  showLandInfo() {
+    const chunk = `${this.state.parent.state.fixed_chunks[4]}, ${Math.floor(
+      this.state.parent.state.parent.state.x / 300
+    )}, ${Math.floor(this.state.parent.state.parent.state.z / 300)} `;
+
+    const land_info = document.getElementById("land");
+    land_info.innerHTML = ` <div>LAND INFO</div>
+      <div>Land Id: ${chunk}</div>
+      <div>Current Owner: </div>
+      <div>On Sale: </div>
+      <div>Price: </div>
+      <div>History: </div>
+    `;
+  }
+
+  intersect(a, b, c) {
+    let min_y = Math.min(a.y, b.y, c.y);
+    let max_y = Math.max(a.y, b.y, c.y);
+
+    let min_x = Math.min(a.x, b.x, c.x);
+    let max_x = Math.max(a.x, b.x, c.x);
+
+    if (
+      Math.floor(min_x / 300) < Math.floor(max_x / 300) ||
+      Math.floor(min_y / 300) < Math.floor(max_y / 300)
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   updateTerrainGeo() {
@@ -113,11 +152,16 @@ class TerrainPlane extends Group {
     }
 
     //for every face calculate the color, do some gradient calculations to make it polygons
+    let i = 0;
     this.geometry.faces.forEach((f) => {
       //get three verts for the face
       const a = this.geometry.vertices[f.a];
       const b = this.geometry.vertices[f.b];
       const c = this.geometry.vertices[f.c];
+
+      if (this.intersect(a, b, c)) {
+        return f.color.setRGB(0, 0, 0);
+      }
 
       //return f.color.setRGB(a.x/this.state.chunkWidth, a.y/this.state.chunkWidth, a.y/this.state.chunkWidth);
 

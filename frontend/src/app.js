@@ -110,6 +110,22 @@ for (let i = 0; i < allKeys.length; i++) {
 //   });
 // };
 
+// Land information
+const land_info = document.createElement("div");
+land_info.id = "land";
+land_info.style.position = "absolute";
+land_info.style.color = "white";
+land_info.style.backgroundColor = "black";
+land_info.style.width = "300px";
+land_info.style.height = land_info.innerHTML = ` <div style="text-align: center">LAND INFO</div>
+<div>Land Id: </div>
+<div>Current Owner: </div>
+<div>On Sale: </div>
+<div>Price: </div>
+<div>History: </div>
+`;
+document.body.appendChild(land_info);
+
 // Set up renderer, canvas, and minor CSS adjustments
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.shadowMap.enabled;
