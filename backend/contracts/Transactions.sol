@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >=0.4.22 <0.9.0;
+pragma experimental ABIEncoderV2;
 
 contract Transactions {
     address private owner;
@@ -18,9 +19,9 @@ contract Transactions {
     
     TransferStruct[] transactions;
 
-    constructor() {
+    constructor() public {
         owner = msg.sender;
-        balanceOf[tx.origin] = msg.sender.balance;
+        balanceOf[msg.sender] = msg.sender.balance;
     }
 
     function getOwner() public view returns (address) {

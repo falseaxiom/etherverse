@@ -1,12 +1,8 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Land {
-<<<<<<< Updated upstream
-    uint price = 0;
-=======
     uint256 price = 0;
     uint256 numPlots = 0;
->>>>>>> Stashed changes
 
     struct History {
         uint date;
@@ -16,14 +12,6 @@ contract Land {
     }
 
     struct Plot {
-<<<<<<< Updated upstream
-        uint id;             // id of plot of land
-        string name;         // name of land
-        address owner;       // current owner of plot
-        uint price;          // current price of plot
-        bool onMarket;       // true if owner wants to sell
-        History[] history;   // history of past owners/sell prices
-=======
         uint256 id; // id of plot of land
         string name; // name of land
         address owner; // current owner of plot
@@ -31,7 +19,6 @@ contract Land {
         bool onMarket; // true if owner wants to sell
         mapping(uint256 => History) history; // history of past owners/sell prices
         uint256 historyLength; // length of history
->>>>>>> Stashed changes
     }
 
     mapping(uint => Plot) public plots; // database of all plots
@@ -74,16 +61,11 @@ contract Land {
         
 
         // add to history
-<<<<<<< Updated upstream
-        plots[_pid].history.push(History(block.timestamp, _buyer, oldOwner, plots[_pid].price));
-        
-=======
         plots[_pid].history[plots[_pid].historyLength] = (
             History(block.timestamp, _buyer, oldOwner, plots[_pid].price)
         );
         plots[_pid].historyLength++;
 
->>>>>>> Stashed changes
         return true;
     }
 
