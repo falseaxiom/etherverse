@@ -80,9 +80,9 @@ class TerrainPlane extends Group {
     // Add self to parent's update list
     // parent.addToUpdateList(this);
     window.addEventListener(
-      "click",
+      "keydown",
       (e) => {
-        this.showLandInfo();
+        if (e.key === "i") this.showLandInfo();
       },
       false
     );
@@ -94,7 +94,14 @@ class TerrainPlane extends Group {
     )}, ${Math.floor(this.state.parent.state.parent.state.z / 300)} `;
 
     const land_info = document.getElementById("land");
-    land_info.innerHTML = ` <div>LAND INFO</div>
+    land_info.innerHTML = ` 
+      <div style="display: flex; flex-direction: row; text-align: center; padding-bottom: 10px; justify-content: center">
+        <input type="number" style="margin-right: 5px; width: 30px"/>
+        <input type="number" style="margin-right: 5px; width: 30px"/>
+        <input type="number" style="margin-right: 5px; width: 30px"/>
+        <button>Search</button>
+      </div>
+      <div style="text-align: center">LAND INFO</div>
       <div>Land Id: ${chunk}</div>
       <div>Current Owner: </div>
       <div>On Sale: </div>

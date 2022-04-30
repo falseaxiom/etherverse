@@ -3,7 +3,6 @@ import { Scene, Color, SphereGeometry, SpotLight, BoxGeometry } from "three";
 import {
   Bird,
   Flower,
-  Land,
   Terrain,
   Cloud,
   ChunkManager,
@@ -57,9 +56,6 @@ class SeedScene extends Scene {
 
     const music = new Music(this, camera);
     this.add(music);
-
-    const land = new Land(this);
-    this.add(land);
 
     this.fog = new THREE.Fog(0xcce0ff, 500, 1100);
 

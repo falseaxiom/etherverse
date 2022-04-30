@@ -117,7 +117,15 @@ land_info.style.position = "absolute";
 land_info.style.color = "white";
 land_info.style.backgroundColor = "black";
 land_info.style.width = "300px";
-land_info.style.height = land_info.innerHTML = ` <div style="text-align: center">LAND INFO</div>
+land_info.style.padding = "10px";
+land_info.style.height = land_info.innerHTML = ` 
+<div style="display: flex; flex-direction: row; text-align: center; padding-bottom: 10px; justify-content: center">
+  <input type="number" style="margin-right: 5px; width: 30px"/>
+  <input type="number" style="margin-right: 5px; width: 30px"/>
+  <input type="number" style="margin-right: 5px; width: 30px"/>
+  <button>Search</button>
+</div>
+<div style="text-align: center">LAND INFO</div>
 <div>Land Id: </div>
 <div>Current Owner: </div>
 <div>On Sale: </div>
