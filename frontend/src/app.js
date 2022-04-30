@@ -17,6 +17,7 @@ import {
   PCFShadowMap,
 } from "three";
 import { SeedScene, LoadingPage } from "scenes";
+import { addProfile, addLand } from "./components/html";
 var ColorTween = require("color-tween");
 
 // Set up camera
@@ -111,100 +112,10 @@ for (let i = 0; i < allKeys.length; i++) {
 // };
 
 // Land information
-const land_info = document.createElement("div");
-land_info.style.position = "absolute";
-land_info.style.color = "white";
-land_info.style.backgroundColor = "black";
-land_info.style.width = "300px";
-land_info.style.padding = "10px";
-
-const search = document.createElement("div");
-search.id = "search";
-search.style.color = "white";
-search.style.backgroundColor = "black";
-search.style.width = "300px";
-search.innerHTML = `<div style="text-align: center; padding-bottom: 10px">
-<input type="number" style="margin-right: 5px; width: 30px"/>
-<input type="number" style="margin-right: 5px; width: 30px"/>
-<input type="number" style="margin-right: 5px; width: 30px"/>
-<button>Search</button>
-</div>`;
-land_info.appendChild(search);
-
-const info = document.createElement("div");
-info.id = "land";
-info.innerHTML = `
-<div style="text-align: center">LAND INFO</div>
-<div>Land Id: </div>
-<div>Current Owner: </div>
-<div>On Sale: </div>
-<div>Price: </div>
-<div>History: </div>
-`;
-land_info.appendChild(info);
-document.body.appendChild(land_info);
+addLand();
 
 // add profile
-const handleProfileClose = () => {
-  const profile = document.getElementById("profile");
-  profile.style.display = "none";
-};
-
-const handleProfileOpen = () => {
-  const profile = document.getElementById("profile");
-  profile.style.display = "block";
-  profile.style.position = "absolute";
-  profile.style.height = "100%";
-  profile.style.width = "100%";
-  profile.style.textAlign = "center";
-
-  // create profile card if not already displayed
-  if (!document.getElementById("card")) {
-    const card = document.createElement("div");
-    card.id = "card";
-    profile.appendChild(card);
-    card.style.height = "100%";
-    card.style.display = "flex";
-    card.style.flexDirection = "column";
-    card.style.justifyContent = "center";
-    card.style.alignItems = "center";
-
-    const card_info = document.createElement("div");
-    card_info.style.width = "70%";
-    card_info.style.height = "70%";
-    card_info.style.display = "flex";
-    card_info.style.flexDirection = "column";
-    card_info.style.justifyContent = "center";
-    card_info.style.alignItems = "center";
-    card_info.style.backgroundColor = "white";
-    card_info.style.borderRadius = "4px";
-    const info = document.createElement("div");
-    info.innerHTML = "Profile";
-    card_info.appendChild(info);
-
-    const button = document.createElement("button");
-    button.innerHTML = "Close";
-    button.onclick = handleProfileClose;
-    const button_div = document.createElement("div");
-    button_div.append(button);
-    card_info.appendChild(button_div);
-    card.appendChild(card_info);
-  }
-};
-
-const profile_info = document.createElement("div");
-profile_info.style.position = "absolute";
-profile_info.style.bottom = "0";
-profile_info.style.margin = "10px";
-const button = document.createElement("button");
-button.innerHTML = `Profile`;
-button.onclick = handleProfileOpen;
-profile_info.appendChild(button);
-document.body.appendChild(profile_info);
-
-const profile = document.createElement("div");
-profile.id = "profile";
-document.body.appendChild(profile);
+addProfile();
 
 // Set up renderer, canvas, and minor CSS adjustments
 renderer.setPixelRatio(window.devicePixelRatio);
