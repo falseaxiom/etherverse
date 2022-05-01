@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Land {
@@ -5,10 +6,10 @@ contract Land {
     uint256 numPlots = 0;
 
     struct History {
-        uint date;
+        uint256 date;
         address buyer;
         address seller;
-        uint price;
+        uint256 price;
     }
 
     struct Plot {
@@ -21,12 +22,16 @@ contract Land {
         uint256 historyLength; // length of history
     }
 
-    mapping(uint => Plot) public plots; // database of all plots
+    mapping(uint256 => Plot) public plots; // database of all plots
 
     // from a2
     // You must emit these events when certain triggers occur (see the ERC-20 spec).
     event Approval(address indexed _from, address indexed _to, uint256 _value);
-    event Transfer(address indexed _owner, address indexed _spender, uint256 _value);
+    event Transfer(
+        address indexed _owner,
+        address indexed _spender,
+        uint256 _value
+    );
 
     function createLand(uint256 _id, string memory _name, address _owner, uint256 _price, bool _onMarket) public returns (bool) {
         // create new plot
@@ -46,19 +51,18 @@ contract Land {
     }
 
     // buy a plot of land
-    function buyPlot(address _buyer, uint _pid) public returns (bool) {
+    function buyPlot(address _buyer, uint256 _pid) public returns (bool) {
         // make sure owner wants to sell
-        require(plots[_pid].onMarket); 
-        
+        require(plots[_pid].onMarket);
+
         // save old owner for updating history
-        address oldOwner = plots[_pid].owner; 
+        address oldOwner = plots[_pid].owner;
 
         // change owners, automatically take plot off market
         plots[_pid].owner = _buyer;
         listPlot(_buyer, _pid);
 
-        // exchange money 
-        
+        // exchange money
 
         // add to history
         plots[_pid].history[plots[_pid].historyLength] = (
@@ -70,25 +74,33 @@ contract Land {
     }
 
     // change price of plot of land
-    function changePrice(address _owner, uint _pid, uint _newPrice) public returns (bool) {
+    function changePrice(
+        address _owner,
+        uint256 _pid,
+        uint256 _newPrice
+    ) public returns (bool) {
         require(plots[_pid].owner == _owner); // make sure request is from owner
         plots[_pid].price = _newPrice;
         return true;
     }
-    
+
     // change name of plot of land
-    function changeName(address _owner, uint _pid, string memory _newName) public returns (bool) {
-        require(plots[_pid].owner == _owner);  // make sure request is from owner
+    function changeName(
+        address _owner,
+        uint256 _pid,
+        string memory _newName
+    ) public returns (bool) {
+        require(plots[_pid].owner == _owner); // make sure request is from owner
         plots[_pid].name = _newName;
         return true;
     }
 
     // put plot on/off market
-    function listPlot(address _owner, uint _pid) public returns (bool) {
+    function listPlot(address _owner, uint256 _pid) public returns (bool) {
         require(plots[_pid].owner == _owner); // make sure request is from owner
 
         plots[_pid].onMarket = !plots[_pid].onMarket;
-        
+
         return true;
     }
 }
