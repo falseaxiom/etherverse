@@ -2,8 +2,8 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Land {
-    uint256 price = 0;
-    uint256 numPlots = 0;
+        
+
 
     struct History {
         uint256 date;
@@ -13,16 +13,35 @@ contract Land {
     }
 
     struct Plot {
-        uint256 id; // id of plot of land
+        uint id; // id of plot of land
         string name; // name of land
         address owner; // current owner of plot
-        uint256 price; // current price of plot
+        uint price; // current price of plot
         bool onMarket; // true if owner wants to sell
         mapping(uint256 => History) history; // history of past owners/sell prices
         uint256 historyLength; // length of history
     }
 
-    mapping(uint256 => Plot) public plots; // database of all plots
+    // mapping(uint256 => Plot) public plots; // database of all plots
+    Plot[] public plots;
+
+    constructor() public {
+        Plot memory p1 = Plot({
+            id: 123,
+            name: "land1",
+            owner: 0x475d51A4393e0A1Ab28D0599EC5E734b16825D4C,
+            price: 0,
+            onMarket: true,
+            historyLength: 0
+        });
+
+        plots.push(p1);
+        // plots[numPlots] = p1;
+        // numPlots += 1;
+
+        // return true;
+        // this.createLand.call(123, "land1", "0xb826e57cafb563FA63E937DCE4274e642e1416e3", 1, true);
+    }
 
     // from a2
     // You must emit these events when certain triggers occur (see the ERC-20 spec).
@@ -33,22 +52,14 @@ contract Land {
         uint256 _value
     );
 
-    function createLand(uint256 _id, string memory _name, address _owner, uint256 _price, bool _onMarket) public returns (bool) {
-        // create new plot
-        Plot memory p1 = Plot({
-            id: _id,
-            name: _name,
-            owner: _owner,
-            price: _price,
-            onMarket: _onMarket,
-            historyLength: 0
-        });
-
-        plots[numPlots] = p1;
-        numPlots++;
-
-        return true;
+    function numPlots() public view returns (uint256) {
+        return plots.length;
     }
+
+    // function createLand(uint256 _id, string memory _name, address _owner, uint256 _price, bool _onMarket) public returns (bool) {
+    //     // create new plot
+        
+    // }
 
     // buy a plot of land
     function buyPlot(address _buyer, uint256 _pid) public returns (bool) {
@@ -68,7 +79,7 @@ contract Land {
         plots[_pid].history[plots[_pid].historyLength] = (
             History(block.timestamp, _buyer, oldOwner, plots[_pid].price)
         );
-        plots[_pid].historyLength++;
+        plots[_pid].historyLength += 1;
 
         return true;
     }
