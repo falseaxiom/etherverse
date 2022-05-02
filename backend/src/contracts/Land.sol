@@ -48,7 +48,7 @@ contract Land {
     // bool onMarket
     constructor() public {
         name = "Etherverse";
-        for (uint256 i = 0; i < 10; i++) {
+        for (uint256 i = 0; i < 144; i++) {
             createPlot("Plot", 0);
         }
     }
@@ -60,10 +60,10 @@ contract Land {
 
         // update plot count, create new plot
         plotCount++;
-        plots[plotCount] = Plot(plotCount, _name, _price, msg.sender, false, 0);
+        plots[plotCount] = Plot(plotCount, _name, _price, msg.sender, true, 0);
 
         // trigger event - plot created
-        emit PlotCreated(plotCount, _name, _price, msg.sender, false);
+        emit PlotCreated(plotCount, _name, _price, msg.sender, true);
     }
 
     function purchasePlot(uint256 _id) public payable {
