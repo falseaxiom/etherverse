@@ -48,7 +48,7 @@ contract Land {
     // bool onMarket
     constructor() public {
         name = "Etherverse";
-        for (uint256 i = 0; i < 10; i++) {
+        for (uint256 i = 0; i < 144; i++) {
             createPlot("Plot", 0);
         }
     }
@@ -60,10 +60,10 @@ contract Land {
 
         // update plot count, create new plot
         plotCount++;
-        plots[plotCount] = Plot(plotCount, _name, _price, msg.sender, false, 0);
+        plots[plotCount] = Plot(plotCount, _name, _price, msg.sender, true, 0);
 
         // trigger event - plot created
-        emit PlotCreated(plotCount, _name, _price, msg.sender, false);
+        emit PlotCreated(plotCount, _name, _price, msg.sender, true);
     }
 
     function purchasePlot(uint256 _id) public payable {
@@ -148,5 +148,20 @@ contract Land {
         plots[_id].onMarket = !plots[_id].onMarket;
 
         return true;
+    }
+
+    // get all plots owned by msg.sender
+    function getPlots() public view returns (uint256[] memory) {
+        uint256[] memory myPlots = new uint256[](plotCount);
+
+        uint256 n = 0;
+        for (uint256 i = 0; i < plotCount; i++) {
+            if (plots[i].owner != msg.sender) continue;
+
+            myPlots[n] = (plots[i].id);
+            n++;
+        }
+
+        return myPlots;
     }
 }
