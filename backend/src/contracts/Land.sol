@@ -149,4 +149,19 @@ contract Land {
 
         return true;
     }
+
+    // get all plots owned by msg.sender
+    function getPlots() public view returns (uint256[] memory) {
+        uint256[] memory myPlots = new uint256[](plotCount);
+
+        uint256 n = 0;
+        for (uint256 i = 0; i < plotCount; i++) {
+            if (plots[i].owner != msg.sender) continue;
+
+            myPlots[n] = (plots[i].id);
+            n++;
+        }
+
+        return myPlots;
+    }
 }
