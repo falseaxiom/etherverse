@@ -18,6 +18,8 @@ import {
 } from "three";
 import { SeedScene, LoadingPage } from "scenes";
 import { addProfile, addLand } from "./components/html";
+import { User, Contract } from "./components/blockchain";
+
 var ColorTween = require("color-tween");
 
 // Set up camera
@@ -111,11 +113,18 @@ for (let i = 0; i < allKeys.length; i++) {
 //   });
 // };
 
+// create user
+let user = new User();
+user.onload();
+
+// create contract
+let contract = new Contract();
+
 // Land information
 addLand();
 
 // add profile
-addProfile();
+addProfile(user);
 
 // Set up renderer, canvas, and minor CSS adjustments
 renderer.setPixelRatio(window.devicePixelRatio);

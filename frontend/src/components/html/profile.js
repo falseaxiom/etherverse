@@ -1,4 +1,4 @@
-const addProfile = () => {
+const addProfile = (user) => {
   const handleProfileClose = () => {
     const profile = document.getElementById("profile");
     profile.style.display = "none";
@@ -33,7 +33,8 @@ const addProfile = () => {
       card_info.style.backgroundColor = "white";
       card_info.style.borderRadius = "4px";
       const info = document.createElement("div");
-      info.innerHTML = "Profile";
+      info.innerHTML = `<div><p>Profile</p><p>User ID: ${user.state.user}</p></div>`;
+
       card_info.appendChild(info);
 
       const button = document.createElement("button");
