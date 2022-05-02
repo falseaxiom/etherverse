@@ -3,7 +3,7 @@ const Web3 = require("web3");
 class Contract {
   constructor() {
     this.state = {
-      contracts: {},
+      contract: {},
       todoList: [],
     };
   }
@@ -269,14 +269,20 @@ class Contract {
     }
   ]`);
 
-    const contract = new web3.eth.Contract(abi, address);
+    this.state.contract = new web3.eth.Contract(abi, address);
+  }
 
-    contract.methods
-      .plots(0)
+  async getLandInfo(landID) {
+    let landInfo = [];
+
+    await this.state.contract.methods
+      .plots(landID)
       .call()
       .then((e) => {
-        console.log(e);
+        landInfo = e;
       });
+
+    return landInfo;
   }
 }
 

@@ -9,6 +9,7 @@ import {
   Mesh,
 } from "three";
 import SimplexNoise from "simplex-noise";
+import Contract from "../../blockchain/contract";
 
 const terrainSize = {
   width: 1000,
@@ -88,20 +89,32 @@ class TerrainPlane extends Group {
     );
   }
 
-  showLandInfo() {
-    const chunk = `${this.state.parent.state.fixed_chunks[4]}, ${Math.floor(
-      this.state.parent.state.parent.state.x / 300
-    )}, ${Math.floor(this.state.parent.state.parent.state.z / 300)} `;
+  async showLandInfo() {
+    const a = this.state.parent.state.fixed_chunks[4];
+    const b = Math.floor(this.state.parent.state.parent.state.x / 300);
+    const c = Math.floor(this.state.parent.state.parent.state.z / 300);
+    const chunkID = 16 * a + 4 * (b + 2) + (c + 2) + 1;
+
+    const contract = new Contract();
+    await contract.loadContract();
+    console.log(contract);
+    let info = [];
+    await contract.getLandInfo(chunkID).then((e) => {
+      info = e;
+    });
 
     const land_info = document.getElementById("land");
     land_info.innerHTML = ` 
       <div style="text-align: center">LAND INFO</div>
-      <div>Land Id: ${chunk}</div>
-      <div>Current Owner: </div>
-      <div>On Sale: </div>
-      <div>Price: </div>
-      <div>History: </div>
+      <div>Land Id: ${chunkID}</div>
+      <div>Current Owner: ${info.owner}</div>
+      <div>On Sale: ${info.onMarket}</div>
+      <div>Price: ${info.price}</div>
+      <div>History: ${info.historyLength}</div>
+      <button id="buy">BUY</button>
     `;
+    const buy_button = document.getElementById("buy");
+    buy_button.disabled = !info.onMarket;
   }
 
   intersect(a, b, c) {
