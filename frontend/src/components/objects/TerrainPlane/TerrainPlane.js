@@ -103,6 +103,8 @@ class TerrainPlane extends Group {
       info = e;
     });
 
+    document.getElementById("number").value = chunkID;
+
     const land_info = document.getElementById("land");
     land_info.innerHTML = ` 
       <div style="text-align: center">LAND INFO</div>
