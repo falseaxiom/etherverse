@@ -48,12 +48,15 @@ contract Land {
     // bool onMarket
     constructor() public {
         name = "Etherverse";
+        for (uint256 i = 0; i < 10; i++) {
+            createPlot("Plot", 0);
+        }
     }
 
-    function createPlot(string memory _name, uint256 _price) public {
+    function createPlot(string memory _name, uint256 _price) internal {
         // require valid name & price
         require(bytes(_name).length > 0);
-        require(_price > 0);
+        // require(_price > 0);
 
         // update plot count, create new plot
         plotCount++;
