@@ -119,6 +119,7 @@ user.onload();
 
 // create contract
 let contract = new Contract();
+contract.loadContract();
 
 // Land information
 addLand();
