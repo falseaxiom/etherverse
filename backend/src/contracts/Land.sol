@@ -155,7 +155,7 @@ contract Land {
         uint256[] memory myPlots = new uint256[](plotCount);
 
         uint256 n = 0;
-        for (uint256 i = 0; i < plotCount; i++) {
+        for (uint256 i = 1; i <= plotCount; i++) {
             if (plots[i].owner != msg.sender) continue;
 
             myPlots[n] = (plots[i].id);
@@ -163,5 +163,58 @@ contract Land {
         }
 
         return myPlots;
+    }
+
+    // // get history of plot
+    // function getHistory(uint256 _id) public view returns (string[][] memory) {
+    //     Plot storage _plot = plots[_id];
+    //     string[][] memory h = new string[][](_plot.historyLength);
+
+    //     for (uint256 i = 1; i <= _plot.historyLength; i++) {
+    //         h[i] = new string[](4);
+
+    //         h[i][0] = Strings.toString(_plot.history[i].date);
+    //         h[i][1] = Strings.toString(_plot.history[i].buyer);
+    //         h[i][2] = Strings.toString(_plot.history[i].seller);
+    //         h[i][3] = Strings.toString(_plot.history[i].price);
+    //     }
+
+    //     return h;
+    // }
+
+    // get date history of plot
+    function getDates(uint256 _id) public view returns (uint256[] memory) {
+        Plot storage _plot = plots[_id];
+        uint256[] memory dates = new uint256[](_plot.historyLength);
+
+        for (uint256 i = 1; i <= _plot.historyLength; i++) {
+            dates[i] = _plot.history[i].date;
+        }
+
+        return dates;
+    }
+
+    // get buyer history of plot
+    function getBuyers(uint256 _id) public view returns (address[] memory) {
+        Plot storage _plot = plots[_id];
+        address[] memory buyers = new address[](_plot.historyLength);
+
+        for (uint256 i = 1; i <= _plot.historyLength; i++) {
+            buyers[i] = _plot.history[i].buyer;
+        }
+
+        return buyers;
+    }
+
+    // get price history of plot
+    function getPrices(uint256 _id) public view returns (uint256[] memory) {
+        Plot storage _plot = plots[_id];
+        uint256[] memory prices = new uint256[](_plot.historyLength);
+
+        for (uint256 i = 1; i <= _plot.historyLength; i++) {
+            prices[i] = _plot.history[i].price;
+        }
+
+        return prices;
     }
 }
