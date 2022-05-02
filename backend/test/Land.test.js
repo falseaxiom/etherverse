@@ -46,7 +46,7 @@ contract("Land", ([deployer, seller, buyer]) => {
       assert.equal(event.name, "Sample Land", "name is correct");
       assert.equal(event.price, "1000000000000000000", "price is correct");
       assert.equal(event.owner, seller, "owner is correct");
-      assert.equal(event.purchased, false, "purchased is correct");
+      assert.equal(event.onMarket, false, "onMarket is correct");
 
       // FAILURE: Plot must have a name
       await await land.createPlot("", web3.utils.toWei("1", "Ether"), {
@@ -55,15 +55,27 @@ contract("Land", ([deployer, seller, buyer]) => {
       // FAILURE: Plot must have a price
       await await land.createPlot("Sample Land", 0, { from: seller }).should.be
         .rejected;
+
+      // SUCCESS: make sure changePrice and changeName also work
+      const plot = await land.plots(plotCount);
+
+      await land.changePrice(plotCount, 1, { from: seller });
+      assert.equal(plot.id.toString(), plotCount.toString(), "id is correct");
+      assert.equal(plot.name, "Sample Land", "name is correct");
+      assert.equal(plot.owner, seller, "owner is correct");
+      assert.equal(event.onMarket, false, "onMarket is correct");
+
+      await land.changeName(plotCount, "newName", { from: seller });
+      await land.listPlot(plotCount, { from: seller });
     });
 
     it("lists plots", async () => {
       const plot = await land.plots(plotCount);
       assert.equal(plot.id.toNumber(), plotCount.toNumber(), "id is correct");
-      assert.equal(plot.name, "Sample Land", "name is correct");
-      assert.equal(plot.price, "1000000000000000000", "price is correct");
+      assert.equal(plot.name, "newName", "name is correct");
+      assert.equal(plot.price, "1", "price is correct");
       assert.equal(plot.owner, seller, "owner is correct");
-      assert.equal(plot.purchased, false, "purchased is correct");
+      assert.equal(plot.onMarket, true, "onMarket is correct");
     });
 
     it("sells land", async () => {
@@ -81,10 +93,10 @@ contract("Land", ([deployer, seller, buyer]) => {
       // Check logs
       const event = result.logs[0].args;
       assert.equal(event.id.toNumber(), plotCount.toNumber(), "id is correct");
-      assert.equal(event.name, "Sample Land", "name is correct");
-      assert.equal(event.price, "1000000000000000000", "price is correct");
+      assert.equal(event.name, "newName", "name is correct");
+      assert.equal(event.price, "1", "price is correct");
       assert.equal(event.owner, buyer, "owner is correct");
-      assert.equal(event.purchased, true, "purchased is correct");
+      assert.equal(event.onMarket, false, "onMarket is correct");
 
       // Check that seller received funds
       let newSellerBalance;
@@ -103,38 +115,33 @@ contract("Land", ([deployer, seller, buyer]) => {
       await land.purchasePlot(99, {
         from: buyer,
         value: web3.utils.toWei("1", "Ether"),
-      }).should.be.rejected; // FAILURE: Buyer tries to buy without enough ether
+      }).should.be.rejected;
       // FAILURE: Buyer tries to buy without enough ether
       await land.purchasePlot(plotCount, {
         from: buyer,
         value: web3.utils.toWei("0.5", "Ether"),
       }).should.be.rejected;
-      // // FAILURE: Deployer tries to buy the product, i.e., product can't be purchased twice
-      // await land.purchasePlot(plotCount, {
-      //   from: deployer,
-      //   value: web3.utils.toWei("1", "Ether"),
-      // }).should.be.rejected;
       // FAILURE: Buyer tries to buy again, i.e., buyer can't be the seller
       await land.purchasePlot(plotCount, {
         from: buyer,
         value: web3.utils.toWei("1", "Ether"),
       }).should.be.rejected;
-    });
 
-    it("changes price", async () => {
+      // make sure history mapping is updated
       const plot = await land.plots(plotCount);
-      const newPrice = 1;
-      result = await land.changePrice(plotCount, newPrice, { from: seller });
-
-      assert.equal(plot.id.toNumber(), plotCount.toNumber(), "id is correct");
-      assert.equal(plot.name, "Sample Land", "name is correct");
       assert.equal(
-        plot.price.toNumber(),
-        newPrice.toNumber(),
-        "price is correct"
+        plot.historyLength.toString(),
+        "1",
+        "historyLength is correct"
       );
-      assert.equal(plot.owner, seller, "owner is correct");
-      assert.equal(plot.purchased, false, "purchased is correct");
+      const hEvent = result.logs[1].args;
+      assert.equal(hEvent.buyer, buyer, "most recent buyer is correct");
+      assert.equal(hEvent.seller, seller, "most recent seller is correct");
+      assert.equal(
+        hEvent.price.toString(),
+        "1",
+        "most recent selling price is correct"
+      );
     });
   });
 });

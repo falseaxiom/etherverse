@@ -10,33 +10,39 @@ contract Land {
         string name;
         uint256 price;
         address payable owner;
-        bool purchased;
-        // bool onMarket;
+        bool onMarket;
+        mapping(uint256 => History) history; // history of past owners/sell prices
+        uint256 historyLength;
     }
 
-    //     struct Plot {
-    //     uint id;             // id of plot of land
-    //     string name;         // name of land
-    //     address owner;       // current owner of plot
-    //     uint price;          // current price of plot
-    //     bool onMarket;       // true if owner wants to sell
-    //     History[] history;   // history of past owners/sell prices
-    // }
+    struct History {
+        uint256 date;
+        address buyer;
+        address seller;
+        uint256 price;
+    }
 
     event PlotCreated(
         uint256 id,
         string name,
         uint256 price,
         address payable owner,
-        bool purchased
+        bool onMarket
     );
-    // bool onMarket
+
     event PlotPurchased(
         uint256 id,
         string name,
         uint256 price,
         address payable owner,
-        bool purchased
+        bool onMarket
+    );
+
+    event HistoryUpdated(
+        uint256 date,
+        address buyer,
+        address seller,
+        uint256 price
     );
 
     // bool onMarket
@@ -45,67 +51,73 @@ contract Land {
     }
 
     function createPlot(string memory _name, uint256 _price) public {
-        // Require a valid name
+        // require valid name & price
         require(bytes(_name).length > 0);
-        // Require a valid price
         require(_price > 0);
-        // Increment product count
+
+        // update plot count, create new plot
         plotCount++;
-        // Create the product
-        plots[plotCount] = Plot(
-            plotCount,
-            _name,
-            _price,
-            msg.sender,
-            false
-            // false
-        );
-        // Trigger an event
+        plots[plotCount] = Plot(plotCount, _name, _price, msg.sender, false, 0);
+
+        // trigger event - plot created
         emit PlotCreated(plotCount, _name, _price, msg.sender, false);
     }
 
     function purchasePlot(uint256 _id) public payable {
-        // Fetch the product
+        // fetch plot & owner
         Plot memory _plot = plots[_id];
-        // Fetch the owner
         address payable _seller = _plot.owner;
-        // Make sure the product has a valid id
+
+        // requirements: valid id, enough ether, product on market, buyer != seller
         require(_plot.id > 0 && _plot.id <= plotCount);
-        // Require that there is enough Ether in the transaction
         require(msg.value >= _plot.price);
-        // Require that the product is on market
-        // require(_plot.onMarket);
-        // Require that the product not purchased
-        // require(!_plot.purchased);
-        // Require that the buyer is not the seller
+        require(_plot.onMarket);
         require(_seller != msg.sender);
-        // Transfer ownership to the buyer
+
+        // transfer ownership to buyer, take off market
         _plot.owner = msg.sender;
-        // Mark as purchased
-        _plot.purchased = true;
-        // Mark as not on market
-        // _plot.onMarket = false;
-        // Update the product
+        _plot.onMarket = false;
+
+        // update plot
         plots[_id] = _plot;
-        // Pay the seller by sending them Ether
+
+        // pay seller by sending them Ether
         address(_seller).transfer(msg.value);
-        // Trigger an event
+
+        // push to history array
+        plots[_id].historyLength++;
+        plots[_id].history[plots[_id].historyLength] = History(
+            block.timestamp,
+            msg.sender,
+            _seller,
+            _plot.price
+        );
+
+        // trigger event - plot purchased
         emit PlotPurchased(
             plotCount,
             _plot.name,
             _plot.price,
             msg.sender,
-            true
+            false
         );
+
+        // trigger another event - history updated
+        History memory _h = plots[_id].history[plots[_id].historyLength];
+        emit HistoryUpdated(_h.date, msg.sender, _seller, _plot.price);
     }
 
     // change price of plot of land
     function changePrice(uint256 _id, uint256 _newPrice) public returns (bool) {
+        // fetch plot & owner
         Plot memory _plot = plots[_id];
         address payable _seller = _plot.owner;
-        require(_seller != msg.sender); // make sure request is from owner
 
-        _plot.price = _newPrice;
+        // require request is from owner
+        require(_seller == msg.sender);
+
+        // update price
+        plots[_id].price = _newPrice;
 
         return true;
     }
@@ -115,16 +127,22 @@ contract Land {
         public
         returns (bool)
     {
-        require(plots[_id].owner == msg.sender); // make sure request is from owner
+        // require request is from owner
+        require(plots[_id].owner == msg.sender);
+
+        // update name
         plots[_id].name = _newName;
+
         return true;
     }
 
     // put plot on/off market
     function listPlot(uint256 _id) public returns (bool) {
-        require(plots[_id].owner == msg.sender); // make sure request is from owner
+        // require request is from owner
+        require(plots[_id].owner == msg.sender);
 
-        // plots[_id].onMarket = !plots[_id].onMarket;
+        // change market status
+        plots[_id].onMarket = !plots[_id].onMarket;
 
         return true;
     }
