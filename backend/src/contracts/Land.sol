@@ -48,7 +48,7 @@ contract Land {
     // bool onMarket
     constructor() public {
         name = "Etherverse";
-        for (uint256 i = 0; i < 144; i++) {
+        for (uint256 i = 0; i < 15; i++) {
             createPlot("Plot", 0);
         }
     }

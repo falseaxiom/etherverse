@@ -40,7 +40,7 @@ contract("Land", ([deployer, seller, buyer]) => {
 
     it("buy plots", async () => {
       // SUCCESS
-      assert.equal(plotCount.toString(), "10");
+      assert.equal(plotCount.toString(), "15");
       // const event = result.logs[0].args;
       // assert.equal(event.id.toNumber(), plotCount.toNumber(), "id is correct");
       // assert.equal(event.name, "Sample Land", "name is correct");
@@ -61,7 +61,7 @@ contract("Land", ([deployer, seller, buyer]) => {
       assert.equal(plot.id.toString(), plotCount.toString(), "id is correct");
       assert.equal(plot.name, "Plot", "name is correct");
       assert.equal(plot.owner, deployer, "owner is correct");
-      assert.equal(plot.onMarket, false, "onMarket is correct");
+      assert.equal(plot.onMarket, true, "onMarket is correct");
 
       await land.changeName(plotCount, "newName", {
         from: deployer,
@@ -77,10 +77,15 @@ contract("Land", ([deployer, seller, buyer]) => {
       assert.equal(plot.name, "newName", "name is correct");
       assert.equal(plot.price, "1", "price is correct");
       assert.equal(plot.owner, deployer, "owner is correct");
-      assert.equal(plot.onMarket, true, "onMarket is correct");
+      assert.equal(plot.onMarket, false, "onMarket is correct");
     });
 
     it("sells land", async () => {
+      // list plot
+      await land.listPlot(plotCount, {
+        from: deployer,
+      });
+
       // Track the seller balance before purchase
       let oldSellerBalance;
       oldSellerBalance = await web3.eth.getBalance(deployer);
