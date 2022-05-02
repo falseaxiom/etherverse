@@ -11,140 +11,268 @@ class Contract {
   async loadContract() {
     const web3 = new Web3("http://localhost:7545");
 
-    const address = "0xe3649f94733D11e163508408bfae14286C7bDb70";
+    const address = "0xe7476Dac25646F0204d367B82bB23953189DDD74";
     const abi = JSON.parse(`[
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "name": "tasks",
-        "outputs": [
-          {
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "name": "content",
-            "type": "string"
-          },
-          {
-            "name": "completed",
-            "type": "bool"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function",
-        "signature": "0x8d977672"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "taskCount",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function",
-        "signature": "0xb6cb58a5"
-      },
-      {
-        "inputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor",
-        "signature": "constructor"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "content",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "completed",
-            "type": "bool"
-          }
-        ],
-        "name": "TaskCreated",
-        "type": "event",
-        "signature": "0x05d0fb833127fc08168556d0e7ca9554fc3f6bc843b3b7d2bf1c35aea6bab660"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "completed",
-            "type": "bool"
-          }
-        ],
-        "name": "TaskCompleted",
-        "type": "event",
-        "signature": "0xe21fa966ca5cd02748c0752352d18c48165e61cb55b4c29cccf924b5a95fcff1"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_content",
-            "type": "string"
-          }
-        ],
-        "name": "createTask",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function",
-        "signature": "0x111002aa"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_id",
-            "type": "uint256"
-          }
-        ],
-        "name": "toggleCompleted",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function",
-        "signature": "0x455f5024"
-      }
-    ]`);
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x06fdde03"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "plotCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x32c55e11"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "plots",
+      "outputs": [
+        {
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "name": "onMarket",
+          "type": "bool"
+        },
+        {
+          "name": "historyLength",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x61bf49ee"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor",
+      "signature": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "onMarket",
+          "type": "bool"
+        }
+      ],
+      "name": "PlotCreated",
+      "type": "event",
+      "signature": "0xb29353bddb7cdcf126a1073d7bf784cca98f9474dc0d64a59435ed90a2a3ef5a"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "onMarket",
+          "type": "bool"
+        }
+      ],
+      "name": "PlotPurchased",
+      "type": "event",
+      "signature": "0x90eae92d3479da9f90e12ccb37d12718e13c02904c6e3b37bba0e77705082837"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "date",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "buyer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "seller",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "price",
+          "type": "uint256"
+        }
+      ],
+      "name": "HistoryUpdated",
+      "type": "event",
+      "signature": "0xe934b6a166c5a1dfd8e354f278d9be746e0fd4d934c7e0242a16f42194d2b9a7"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "purchasePlot",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function",
+      "signature": "0xd0f11ea1"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_id",
+          "type": "uint256"
+        },
+        {
+          "name": "_newPrice",
+          "type": "uint256"
+        }
+      ],
+      "name": "changePrice",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0xb3de019c"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_id",
+          "type": "uint256"
+        },
+        {
+          "name": "_newName",
+          "type": "string"
+        }
+      ],
+      "name": "changeName",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0xc39cbef1"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "listPlot",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x5d2711cc"
+    }
+  ]`);
 
     const contract = new web3.eth.Contract(abi, address);
+
     contract.methods
-      .taskCount()
-      .call()
-      .then((e) => {
-        console.log(e);
-      });
-    contract.methods
-      .tasks(1)
+      .plots(0)
       .call()
       .then((e) => {
         console.log(e);
