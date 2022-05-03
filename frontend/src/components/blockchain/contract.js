@@ -13,7 +13,7 @@ class Contract {
   async loadContract() {
     const web3 = new Web3("http://localhost:7545");
 
-    const address = "0xc7D7b2Ce8967c7074Eb14136AeEae85632B1CA2f";
+    const address = "0x4C94Df375b48514DBFD69309978Af33a1565Fb3F";
     const abi = JSON.parse(`[
       {
         "constant": true,
@@ -302,36 +302,16 @@ class Contract {
     return landInfo;
   }
 
-  async buyLand(landID) {
+  async buyLand(landID, price) {
     const user = new User();
     await user.onload();
 
     const senderAddress = user.state.user;
 
-    let balance = 0;
-    await web3.eth.getBalance(senderAddress, function (err, res) {
-      if (err) {
-        console.log(err);
-      } else {
-        balance = res;
-        balance = new web3.utils.BN(balance);
-      }
-    });
-    // await this.state.contract.methods
-    //   .changePrice(landID, web3.utils.toWei("0", "Ether"))
-    //   .send({ from: senderAddress }, (err, res) => {
-    //     if (err) {
-    //       console.log(err);
-    //       return;
-    //     }
-    //     console.log(res);
-    //   });
-
-    console.log(senderAddress);
     await this.state.contract.methods.purchasePlot(landID).send(
       {
         from: senderAddress,
-        value: "10000100000000000000",
+        value: price,
       },
       function (err, res) {
         if (err) {
@@ -341,6 +321,37 @@ class Contract {
         console.log("Hash of the transaction: " + res);
       }
     );
+  }
+
+  async changePrice(id, price) {
+    const user = new User();
+    await user.onload();
+
+    const senderAddress = user.state.user;
+
+    await this.state.contract.methods
+      .changePrice(id, price)
+      .send({ from: senderAddress }, (err, res) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(res);
+      });
+  }
+
+  async onMarket(id) {
+    const user = new User();
+    await user.onload();
+
+    const senderAddress = user.state.user;
+    await this.state.contract.methods
+      .listPlot(id)
+      .send({ from: senderAddress }, (err, res) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(res);
+      });
   }
 }
 

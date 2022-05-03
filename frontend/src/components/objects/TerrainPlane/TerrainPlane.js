@@ -97,7 +97,7 @@ class TerrainPlane extends Group {
 
     const contract = new Contract();
     await contract.loadContract();
-    console.log(contract);
+
     let info = [];
     await contract.getLandInfo(chunkID).then((e) => {
       info = e;
@@ -112,11 +112,37 @@ class TerrainPlane extends Group {
       <div>Current Owner: ${info.owner}</div>
       <div>On Sale: ${info.onMarket}</div>
       <div>Price: ${info.price}</div>
-      <div>History: ${info.historyLength}</div>
-      <button id="buy">BUY</button>
+      <div style="width: 100%; text-align: center"><button id="buy">BUY</button></div>
     `;
+
+    const handleBuy = async () => {
+      const chunkID = document.getElementById("number").value;
+
+      const contract = new Contract();
+      await contract.loadContract();
+      await contract.buyLand(chunkID, info.price);
+
+      let info = [];
+      await contract.getLandInfo(chunkID).then((e) => {
+        info = e;
+      });
+
+      const land_info = document.getElementById("land");
+      land_info.innerHTML = ` 
+          <div style="text-align: center">LAND INFO</div>
+          <div>Land Id: ${chunkID}</div>
+          <div>Current Owner: ${info.owner}</div>
+          <div>On Sale: ${info.onMarket}</div>
+          <div>Price: ${info.price}</div>
+          <div style="width: 100%; text-align: center"><button id="buy">BUY</button></div>
+        `;
+      const buy_button = document.getElementById("buy");
+      buy_button.disabled = !info.onMarket;
+    };
+
     const buy_button = document.getElementById("buy");
     buy_button.disabled = !info.onMarket;
+    buy_button.onclick = handleBuy;
   }
 
   intersect(a, b, c) {

@@ -5,7 +5,24 @@ const handleBuy = async () => {
 
   const contract = new Contract();
   await contract.loadContract();
-  await contract.buyLand(chunkID);
+  await contract.buyLand(chunkID, info.price);
+
+  let info = [];
+  await contract.getLandInfo(chunkID).then((e) => {
+    info = e;
+  });
+
+  const land_info = document.getElementById("land");
+  land_info.innerHTML = ` 
+      <div style="text-align: center">LAND INFO</div>
+      <div>Land Id: ${chunkID}</div>
+      <div>Current Owner: ${info.owner}</div>
+      <div>On Sale: ${info.onMarket}</div>
+      <div>Price: ${info.price}</div>
+      <div style="width: 100%; text-align: center"><button id="buy">BUY</button></div>
+    `;
+  const buy_button = document.getElementById("buy");
+  buy_button.disabled = !info.onMarket;
 };
 
 const handleSearch = async () => {
@@ -26,8 +43,7 @@ const handleSearch = async () => {
       <div>Current Owner: ${info.owner}</div>
       <div>On Sale: ${info.onMarket}</div>
       <div>Price: ${info.price}</div>
-      <div>History: ${info.historyLength}</div>
-      <button id="buy">BUY</button>
+      <div style="width: 100%; text-align: center"><button id="buy">BUY</button></div>
     `;
   const buy_button = document.getElementById("buy");
   buy_button.disabled = !info.onMarket;
@@ -61,8 +77,7 @@ const addLand = () => {
 <div>Current Owner: </div>
 <div>On Sale: </div>
 <div>Price: </div>
-<div>History: </div>
-<button id="buy">BUY</button>
+<div style="width: 100%; text-align: center"><button id="buy">BUY</button></div>
 `;
   land_info.appendChild(info);
   document.body.appendChild(land_info);
