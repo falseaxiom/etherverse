@@ -1,5 +1,13 @@
 import Contract from "../blockchain/contract";
 
+const handleBuy = async () => {
+  const chunkID = document.getElementById("number").value;
+
+  const contract = new Contract();
+  await contract.loadContract();
+  await contract.buyLand(chunkID);
+};
+
 const handleSearch = async () => {
   const chunkID = document.getElementById("number").value;
 
@@ -23,6 +31,7 @@ const handleSearch = async () => {
     `;
   const buy_button = document.getElementById("buy");
   buy_button.disabled = !info.onMarket;
+  buy_button.onclick = handleBuy;
 };
 
 const addLand = () => {
@@ -63,6 +72,7 @@ const addLand = () => {
 
   const buy_button = document.getElementById("buy");
   buy_button.disabled = true;
+  buy_button.onclick = handleBuy;
 };
 
 export default addLand;
