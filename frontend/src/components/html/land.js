@@ -27,7 +27,11 @@ const handleSearch = async () => {
       <div>On Sale: ${info.onMarket}</div>
       <div>Price: ${info.price}</div>
       <div>History: ${info.historyLength}</div>
-      <button id="buy">BUY</button>
+      <button style="margin: 0;
+      position: absolute;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);" id="buy">BUY</button>
     `;
   const buy_button = document.getElementById("buy");
   buy_button.disabled = !info.onMarket;
@@ -62,7 +66,11 @@ const addLand = () => {
 <div>On Sale: </div>
 <div>Price: </div>
 <div>History: </div>
-<button id="buy">BUY</button>
+<button style="  margin: 0;
+position: absolute;
+left: 50%;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);" id="buy">BUY</button>
 `;
   land_info.appendChild(info);
   document.body.appendChild(land_info);
@@ -70,9 +78,15 @@ const addLand = () => {
   const button = document.getElementById("search-button");
   button.onclick = handleSearch;
 
+
   const buy_button = document.getElementById("buy");
   buy_button.disabled = true;
   buy_button.onclick = handleBuy;
+  buy_button.style.margin = 0;
+  buy_button.position="absolute";
+  buy_button.left = "50%";
+
+
 };
 
 export default addLand;
