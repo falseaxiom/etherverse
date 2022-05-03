@@ -88,6 +88,9 @@ const addLand = () => {
   const buy_button = document.getElementById("buy");
   buy_button.disabled = true;
   buy_button.onclick = handleBuy;
+  buy_button.style.margin = 0;
+  buy_button.position = "absolute";
+  buy_button.left = "50%";
 };
 
 export default addLand;
