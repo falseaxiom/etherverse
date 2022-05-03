@@ -5,12 +5,12 @@ const handleBuy = async () => {
 
   const contract = new Contract();
   await contract.loadContract();
-  await contract.buyLand(chunkID, info.price);
 
   let info = [];
   await contract.getLandInfo(chunkID).then((e) => {
     info = e;
   });
+  await contract.buyLand(chunkID, info.price);
 
   const land_info = document.getElementById("land");
   land_info.innerHTML = ` 

@@ -311,7 +311,7 @@ class Contract {
     await this.state.contract.methods.purchasePlot(landID).send(
       {
         from: senderAddress,
-        value: price,
+        value: web3.utils.toWei(price.toString(), "Ether"),
       },
       function (err, res) {
         if (err) {
